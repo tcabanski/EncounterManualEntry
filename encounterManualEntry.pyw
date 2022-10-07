@@ -36,7 +36,7 @@ try:
                 case "init":
                     init = parts[1]
         
-        if init[0] == "-" or init[0] == "+":
+        if init != "" and (init[0] == "-" or init[0] == "+"):
             roll = d20.roll(f"1d20{init}")
             init = roll.total
 
