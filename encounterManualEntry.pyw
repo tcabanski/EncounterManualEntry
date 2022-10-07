@@ -16,6 +16,7 @@ try:
             raise Exception("fInvalid format. Use [qty],[name],<AC #>,<HP #>,<Init #>.  Use +/- prefix on initiative to roll.")
 
 
+        monsters_added = 0
         qty = line[0]
         name = line[1]
         ac = ""
@@ -36,7 +37,13 @@ try:
             init = roll.total
 
         time.sleep(3)
+        if monsters_added > 4:
+            #add a blank entry and backup to the name field
+            keyboard.press(Key.enter)
+            keyboard.type("\t\t\t\t\t\t")
+
         keyboard.type(f"{name}\t{hp}\t{ac}\t\t{init}\t{qty}\t")
+        monsters_added = monsters_added + 1
 
 except Exception as err:
     toaster.show_toast('Error', f'{err}', duration=10)
