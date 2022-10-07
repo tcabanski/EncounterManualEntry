@@ -8,17 +8,20 @@ import csv
 toaster = ToastNotifier()
 keyboard = Controller()
 
+print("sleep")
+time.sleep(3)
+
 try:
     lines = pyperclip.paste().split('\n')
     reader = csv.reader(lines)
+    monsters_added = 0
+
     for line in reader:
         if (len(line) < 2):
             raise Exception("fInvalid format. Use [qty],[name],<AC #>,<HP #>,<Init #>.  Use +/- prefix on initiative to roll.")
 
-
-        monsters_added = 0
         qty = line[0]
-        name = line[1]
+        name = line[1].strip('"')
         ac = ""
         hp = ""
         init = ""
@@ -36,13 +39,15 @@ try:
             roll = d20.roll(f"1d20{init}")
             init = roll.total
 
-        time.sleep(3)
-        if monsters_added > 4:
+        if monsters_added > 3:
             #add a blank entry and backup to the name field
+            print("adding line")
             keyboard.press(Key.enter)
-            keyboard.type("\t\t\t\t\t\t")
+            with keyboard.pressed(Key.shift):
+                keyboard.type("\t"* 6)
 
         keyboard.type(f"{name}\t{hp}\t{ac}\t\t{init}\t{qty}\t")
+        print(f"Added entry {name}")
         monsters_added = monsters_added + 1
 
 except Exception as err:
