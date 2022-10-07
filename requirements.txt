@@ -1,3 +1,4 @@
 pyperclip
 win10toast
 pynput
+d20
